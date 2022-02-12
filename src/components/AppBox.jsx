@@ -1,8 +1,8 @@
-import AppBoxSyled from "./styled/AppBoxSyled";
+import BoxSyled from "./styled/BoxSyled";
 
 const AppBox = (props) => {
   const { children } = props;
-  return <AppBoxSyled>{children}</AppBoxSyled>;
+  return <BoxSyled sx={{ overflow: "hidden" }}>{children}</BoxSyled>;
 };
 
 export default AppBox;

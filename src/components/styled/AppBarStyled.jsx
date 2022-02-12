@@ -8,6 +8,8 @@ const AppBarStyled = styled(BottomNavigation)({
   left: 0,
   right: 0,
   color: "white",
+  borderTop: "1px solid white",
+  borderRadius: "15px 15px 0px 0px",
 });
 
 export default AppBarStyled;
