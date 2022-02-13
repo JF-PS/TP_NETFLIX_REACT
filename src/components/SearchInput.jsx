@@ -1,12 +1,8 @@
-import { useState } from "react";
 import InputStyled from "./styled/InputStyled";
 
 const SearchInput = (props) => {
-  //   const { handleChange } = props;
-  const [value, setValue] = useState("");
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
+  const { value, handleChange } = props;
+
   return (
     <InputStyled
       id="searchInput"
