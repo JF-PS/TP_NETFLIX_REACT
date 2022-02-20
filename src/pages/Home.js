@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { searchMovie, popularMovie } from "../api/movie-api";
 
 import SearchInput from "../components/SearchInput";
 import VerticalList from "../components/VerticalList";
@@ -7,11 +8,15 @@ import Grid from "@mui/material/Grid";
 import data from "../data.json";
 
 const Home = () => {
-  const { movies, genres } = data;
+  const { movies } = data;
   const [keyParam, setKeyParam] = useState("");
   const { pathname, search } = useLocation();
   const query = useMemo(() => new URLSearchParams(search), [search]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    popularMovie().then((response) => console.log(response));
+  }, []);
 
   const handleChange = (e) => {
     const { value } = e.target;
