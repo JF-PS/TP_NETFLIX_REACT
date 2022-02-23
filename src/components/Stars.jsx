@@ -7,6 +7,7 @@ import Rating from "@mui/material/Rating";
  * ```jsx
  * <Stars note={7} />
  * ```
+ *
  * #rendu : ★★★☆☆
  */
 

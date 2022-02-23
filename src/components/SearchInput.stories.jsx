@@ -5,5 +5,7 @@ export default {
 };
 
 export const Default = (args) => {
-  return <div>Champs de Recherche, à besoin d'une valeur et d'un onChange</div>;
+  return (
+    <div>Champs de Recherche, à besoin d'une valeur et d'un onChange.</div>
+  );
 };

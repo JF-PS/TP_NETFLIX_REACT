@@ -4,8 +4,10 @@ import InputStyled from "./styled/InputStyled";
  *
  * ## Usage
  * ```jsx
+ *
  *  const [value, setValue] = useState("Dark Vador");
  *  <InputStyled value={value} onChange={onChange} />
+ *
  * ```
  */
 const SearchInput = (props) => {

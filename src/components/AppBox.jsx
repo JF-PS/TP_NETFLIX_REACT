@@ -4,9 +4,11 @@ import BoxSyled from "./styled/BoxSyled";
  *
  * ## Usage
  * ```jsx
+ *
  * <AppBox>
  *    Contenu de l'app
  * </AppBox>
+ *
  * ```
  */
 const AppBox = (props) => {

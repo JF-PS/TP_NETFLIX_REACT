@@ -8,7 +8,7 @@ export const Default = (args) => {
   return (
     <div>
       Prend en paramètre une note sur 10 et la convertit sur 5. Et renvoie en
-      nombre d'étoile la note
+      nombre d'étoile la note.
     </div>
   );
 };

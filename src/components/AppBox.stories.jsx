@@ -5,5 +5,5 @@ export default {
 };
 
 export const Default = (args) => {
-  return <div>Mettre le contenu de l'app</div>;
+  return <div>Mettre le contenu de l'app.</div>;
 };
