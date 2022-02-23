@@ -6,6 +6,7 @@ const borderColor = { borderColor: color };
 
 const InputStyled = styled(TextField)({
   width: "100%",
+  marginBottom: 20,
   input: { color },
   label: { color },
   "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": borderColor,

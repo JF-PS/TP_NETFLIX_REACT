@@ -6,8 +6,8 @@ const SimilarMovies = (props) => {
   const navigate = useNavigate();
 
   const { movies } = data;
-  const { genre_ids } = props;
-  const list = movies.filter((movie) => movie.genre_ids.includes(genre_ids));
+  const { genres } = props;
+  const list = movies.filter((movie) => movie.genre_ids.includes(1));
 
   const handleClick = (id) => {
     navigate(`/movies/${id}`);
@@ -15,8 +15,9 @@ const SimilarMovies = (props) => {
 
   return (
     <div>
-      {list.map((movie) => (
+      {list.map((movie, index) => (
         <img
+          key={index}
           style={{
             width: "100px",
             cursor: "pointer",

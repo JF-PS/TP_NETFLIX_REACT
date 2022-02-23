@@ -1,9 +1,13 @@
 import { fetchApi } from "../utils/fetch-api";
 
-export const searchMovie = (value) => {
-  return fetchApi(`search?query=${value}&`, "get");
-};
-
-export const popularMovie = () => {
-  return fetchApi("popular?", "get");
+export const movieApi = {
+  getById: async (id) => {
+    return fetchApi(`movie/${id}?`, "get");
+  },
+  searchMovie: async (value) => {
+    return fetchApi(`search/movie?query=${value}&`, "get");
+  },
+  popularMovie: async () => {
+    return fetchApi("movie/popular?", "get");
+  },
 };

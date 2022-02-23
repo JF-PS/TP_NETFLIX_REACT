@@ -1,32 +1,61 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { searchMovie, popularMovie } from "../api/movie-api";
-
+import { useSearchParams } from "react-router-dom";
+import { createSelector } from "@reduxjs/toolkit";
+import { debounce } from "lodash";
+import { getPopularMovies, searchMovies } from "../slices/movie-slice";
+import { useDispatch, useSelector } from "react-redux";
 import SearchInput from "../components/SearchInput";
 import VerticalList from "../components/VerticalList";
 import Grid from "@mui/material/Grid";
-import data from "../data.json";
+
+import InputStyled from "../components/styled/InputStyled";
+
+const selector = createSelector(
+  [(state) => state.movie.movies.byId],
+  (movies) => ({ movies })
+);
 
 const Home = () => {
-  const { movies } = data;
-  const [keyParam, setKeyParam] = useState("");
-  const { pathname, search } = useLocation();
-  const query = useMemo(() => new URLSearchParams(search), [search]);
+  const { movies } = useSelector(selector);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyParam = useMemo(() => searchParams.get("q") || "", [searchParams]);
+  const [date, setDate] = useState("");
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    popularMovie().then((response) => console.log(response));
-  }, []);
+    dispatch(getPopularMovies());
+  }, [dispatch]);
+
+  const debouceGetEntity = useMemo(
+    () =>
+      debounce((value) => {
+        if (value === "") dispatch(getPopularMovies());
+        else dispatch(searchMovies(value));
+      }, 500),
+    [dispatch]
+  );
 
   const handleChange = (e) => {
     const { value } = e.target;
-    setKeyParam(value);
-    navigate(`${pathname}?q=${value}`);
+    debouceGetEntity(value);
+    setSearchParams(value ? { q: value } : {});
+  };
+
+  const handleDateChange = (e) => {
+    const { value } = e.target;
+    setDate(value);
   };
 
   const movieslist = useMemo(
-    () => movies.filter((movie) => movie.title.includes(query.get("q") || "")),
-    [query, movies]
+    () =>
+      Object.values(movies).filter((movie) => {
+        if (date === "") return movie;
+        return movie.release_date === date;
+      }),
+    [date, movies]
   );
 
   return (
@@ -40,6 +69,16 @@ const Home = () => {
     >
       <Grid item xs={2} sx={{ width: "100%" }}>
         <SearchInput value={keyParam} handleChange={handleChange} />
+        <InputStyled
+          id="date"
+          label="Movie-date"
+          type="date"
+          value={date}
+          onChange={handleDateChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
       </Grid>
       <Grid
         item

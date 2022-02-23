@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { getMovie } from "../slices/movie-slice";
+import { createSelector } from "@reduxjs/toolkit";
+import { isEmpty } from "lodash";
+
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import data from "../data.json";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
 import Collapse from "@mui/material/Collapse";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Stars from "../components/Stars";
@@ -24,29 +28,45 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+const selector = createSelector(
+  [(state) => state.movie.movies.byId],
+  (movies) => ({ movies })
+);
+
 const Movie = () => {
+  const { movies } = useSelector(selector);
   const [expanded, setExpanded] = useState(false);
+  const dispatch = useDispatch();
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   const { id } = useParams();
-  const { movies, genres } = data;
+  const movie = !isEmpty(movies[id]) ? movies[id] : {};
   const {
-    poster_path,
-    overview,
-    vote_average,
-    title,
-    genre_ids,
-    release_date,
-  } = movies.filter((m) => m.id === parseInt(id))[0];
+    poster_path = "",
+    overview = "",
+    vote_average = "",
+    title = "",
+    genre_ids = "",
+    release_date = "",
+    genres = [],
+  } = movie;
+
+  useEffect(() => {
+    dispatch(getMovie(id));
+  }, [dispatch, id]);
 
   return (
     <Card sx={{ maxWidth: 345, backgroundColor: "#252526", color: "white" }}>
-      <CardMedia
-        component="img"
-        image={`https://image.tmdb.org/t/p/w500${poster_path}`}
-        alt="green iguana"
-      />
+      {poster_path !== "" && (
+        <CardMedia
+          component="img"
+          image={`https://image.tmdb.org/t/p/w500${poster_path}`}
+          alt="green iguana"
+        />
+      )}
+
       <CardContent>
         <Stack spacing={4}>
           <Typography gutterBottom variant="h5" component="div">
@@ -55,9 +75,6 @@ const Movie = () => {
           <Typography variant="body2">Réalisé par John Doe</Typography>
           <Typography variant="subtitle2" component="div">
             Date de sortie : {release_date}
-          </Typography>
-          <Typography variant="subtitle2" component="div">
-            Genres : {genres[genre_ids]}
           </Typography>
           <Typography variant="subtitle2" component="div">
             130 minutes
@@ -79,7 +96,7 @@ const Movie = () => {
           </Collapse>
           <Stars note={vote_average} />
           <Typography>Contenu similaire :</Typography>
-          <SimilarMovies genre_ids={genre_ids[0]} />
+          <SimilarMovies genres={genres} />
         </Stack>
       </CardContent>
 
