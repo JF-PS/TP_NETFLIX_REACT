@@ -1,6 +1,15 @@
 import React from "react";
 import Rating from "@mui/material/Rating";
 
+/**
+ *
+ * ## Usage
+ * ```jsx
+ * <Stars note={7} />
+ * ```
+ * #rendu : ★★★☆☆
+ */
+
 const Stars = (props) => {
   const { note } = props;
   return (
